@@ -9,22 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LayoutRouteRouteImport } from './routes/layout/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as ProductsNewRouteImport } from './routes/products/new'
-import { Route as ProductsIdIndexRouteImport } from './routes/products/$id/index'
-import { Route as ProductsIdEditRouteImport } from './routes/products/$id/edit'
+import { Route as LayoutProductsIndexRouteImport } from './routes/layout/products/index'
+import { Route as LayoutDashboardIndexRouteImport } from './routes/layout/dashboard/index'
+import { Route as LayoutProductsNewRouteImport } from './routes/layout/products/new'
+import { Route as LayoutProductsIdIndexRouteImport } from './routes/layout/products/$id/index'
+import { Route as LayoutProductsIdEditRouteImport } from './routes/layout/products/$id/edit'
 
+const LayoutRouteRoute = LayoutRouteRouteImport.update({
+  id: '/layout',
+  path: '/layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductsIndexRoute = ProductsIndexRouteImport.update({
-  id: '/products/',
-  path: '/products/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginIndexRoute = LoginIndexRouteImport.update({
@@ -32,109 +33,116 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardIndexRoute = DashboardIndexRouteImport.update({
+const LayoutProductsIndexRoute = LayoutProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => LayoutRouteRoute,
+} as any)
+const LayoutDashboardIndexRoute = LayoutDashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
-const ProductsNewRoute = ProductsNewRouteImport.update({
+const LayoutProductsNewRoute = LayoutProductsNewRouteImport.update({
   id: '/products/new',
   path: '/products/new',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
-const ProductsIdIndexRoute = ProductsIdIndexRouteImport.update({
+const LayoutProductsIdIndexRoute = LayoutProductsIdIndexRouteImport.update({
   id: '/products/$id/',
   path: '/products/$id/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
-const ProductsIdEditRoute = ProductsIdEditRouteImport.update({
+const LayoutProductsIdEditRoute = LayoutProductsIdEditRouteImport.update({
   id: '/products/$id/edit',
   path: '/products/$id/edit',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/products/new': typeof ProductsNewRoute
-  '/dashboard/': typeof DashboardIndexRoute
+  '/layout': typeof LayoutRouteRouteWithChildren
   '/login/': typeof LoginIndexRoute
-  '/products/': typeof ProductsIndexRoute
-  '/products/$id/edit': typeof ProductsIdEditRoute
-  '/products/$id/': typeof ProductsIdIndexRoute
+  '/layout/products/new': typeof LayoutProductsNewRoute
+  '/layout/dashboard/': typeof LayoutDashboardIndexRoute
+  '/layout/products/': typeof LayoutProductsIndexRoute
+  '/layout/products/$id/edit': typeof LayoutProductsIdEditRoute
+  '/layout/products/$id/': typeof LayoutProductsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/products/new': typeof ProductsNewRoute
-  '/dashboard': typeof DashboardIndexRoute
+  '/layout': typeof LayoutRouteRouteWithChildren
   '/login': typeof LoginIndexRoute
-  '/products': typeof ProductsIndexRoute
-  '/products/$id/edit': typeof ProductsIdEditRoute
-  '/products/$id': typeof ProductsIdIndexRoute
+  '/layout/products/new': typeof LayoutProductsNewRoute
+  '/layout/dashboard': typeof LayoutDashboardIndexRoute
+  '/layout/products': typeof LayoutProductsIndexRoute
+  '/layout/products/$id/edit': typeof LayoutProductsIdEditRoute
+  '/layout/products/$id': typeof LayoutProductsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/products/new': typeof ProductsNewRoute
-  '/dashboard/': typeof DashboardIndexRoute
+  '/layout': typeof LayoutRouteRouteWithChildren
   '/login/': typeof LoginIndexRoute
-  '/products/': typeof ProductsIndexRoute
-  '/products/$id/edit': typeof ProductsIdEditRoute
-  '/products/$id/': typeof ProductsIdIndexRoute
+  '/layout/products/new': typeof LayoutProductsNewRoute
+  '/layout/dashboard/': typeof LayoutDashboardIndexRoute
+  '/layout/products/': typeof LayoutProductsIndexRoute
+  '/layout/products/$id/edit': typeof LayoutProductsIdEditRoute
+  '/layout/products/$id/': typeof LayoutProductsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/products/new'
-    | '/dashboard/'
+    | '/layout'
     | '/login/'
-    | '/products/'
-    | '/products/$id/edit'
-    | '/products/$id/'
+    | '/layout/products/new'
+    | '/layout/dashboard/'
+    | '/layout/products/'
+    | '/layout/products/$id/edit'
+    | '/layout/products/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/products/new'
-    | '/dashboard'
+    | '/layout'
     | '/login'
-    | '/products'
-    | '/products/$id/edit'
-    | '/products/$id'
+    | '/layout/products/new'
+    | '/layout/dashboard'
+    | '/layout/products'
+    | '/layout/products/$id/edit'
+    | '/layout/products/$id'
   id:
     | '__root__'
     | '/'
-    | '/products/new'
-    | '/dashboard/'
+    | '/layout'
     | '/login/'
-    | '/products/'
-    | '/products/$id/edit'
-    | '/products/$id/'
+    | '/layout/products/new'
+    | '/layout/dashboard/'
+    | '/layout/products/'
+    | '/layout/products/$id/edit'
+    | '/layout/products/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProductsNewRoute: typeof ProductsNewRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
+  LayoutRouteRoute: typeof LayoutRouteRouteWithChildren
   LoginIndexRoute: typeof LoginIndexRoute
-  ProductsIndexRoute: typeof ProductsIndexRoute
-  ProductsIdEditRoute: typeof ProductsIdEditRoute
-  ProductsIdIndexRoute: typeof ProductsIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/layout': {
+      id: '/layout'
+      path: '/layout'
+      fullPath: '/layout'
+      preLoaderRoute: typeof LayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/products/': {
-      id: '/products/'
-      path: '/products'
-      fullPath: '/products/'
-      preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login/': {
@@ -144,45 +152,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/': {
-      id: '/dashboard/'
+    '/layout/products/': {
+      id: '/layout/products/'
+      path: '/products'
+      fullPath: '/layout/products/'
+      preLoaderRoute: typeof LayoutProductsIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
+    }
+    '/layout/dashboard/': {
+      id: '/layout/dashboard/'
       path: '/dashboard'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/layout/dashboard/'
+      preLoaderRoute: typeof LayoutDashboardIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
-    '/products/new': {
-      id: '/products/new'
+    '/layout/products/new': {
+      id: '/layout/products/new'
       path: '/products/new'
-      fullPath: '/products/new'
-      preLoaderRoute: typeof ProductsNewRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/layout/products/new'
+      preLoaderRoute: typeof LayoutProductsNewRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
-    '/products/$id/': {
-      id: '/products/$id/'
+    '/layout/products/$id/': {
+      id: '/layout/products/$id/'
       path: '/products/$id'
-      fullPath: '/products/$id/'
-      preLoaderRoute: typeof ProductsIdIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/layout/products/$id/'
+      preLoaderRoute: typeof LayoutProductsIdIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
-    '/products/$id/edit': {
-      id: '/products/$id/edit'
+    '/layout/products/$id/edit': {
+      id: '/layout/products/$id/edit'
       path: '/products/$id/edit'
-      fullPath: '/products/$id/edit'
-      preLoaderRoute: typeof ProductsIdEditRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/layout/products/$id/edit'
+      preLoaderRoute: typeof LayoutProductsIdEditRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
   }
 }
 
+interface LayoutRouteRouteChildren {
+  LayoutProductsNewRoute: typeof LayoutProductsNewRoute
+  LayoutDashboardIndexRoute: typeof LayoutDashboardIndexRoute
+  LayoutProductsIndexRoute: typeof LayoutProductsIndexRoute
+  LayoutProductsIdEditRoute: typeof LayoutProductsIdEditRoute
+  LayoutProductsIdIndexRoute: typeof LayoutProductsIdIndexRoute
+}
+
+const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
+  LayoutProductsNewRoute: LayoutProductsNewRoute,
+  LayoutDashboardIndexRoute: LayoutDashboardIndexRoute,
+  LayoutProductsIndexRoute: LayoutProductsIndexRoute,
+  LayoutProductsIdEditRoute: LayoutProductsIdEditRoute,
+  LayoutProductsIdIndexRoute: LayoutProductsIdIndexRoute,
+}
+
+const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(
+  LayoutRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProductsNewRoute: ProductsNewRoute,
-  DashboardIndexRoute: DashboardIndexRoute,
+  LayoutRouteRoute: LayoutRouteRouteWithChildren,
   LoginIndexRoute: LoginIndexRoute,
-  ProductsIndexRoute: ProductsIndexRoute,
-  ProductsIdEditRoute: ProductsIdEditRoute,
-  ProductsIdIndexRoute: ProductsIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
