@@ -9,133 +9,135 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LayoutRouteRouteImport } from './routes/layout/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
-import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
-import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
-import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
-import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
-import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
-import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as LayoutProductsIndexRouteImport } from './routes/layout/products/index'
+import { Route as LayoutDashboardIndexRouteImport } from './routes/layout/dashboard/index'
+import { Route as LayoutProductsNewRouteImport } from './routes/layout/products/new'
+import { Route as LayoutProductsIdIndexRouteImport } from './routes/layout/products/$id/index'
+import { Route as LayoutProductsIdEditRouteImport } from './routes/layout/products/$id/edit'
 
+const LayoutRouteRoute = LayoutRouteRouteImport.update({
+  id: '/layout',
+  path: '/layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
-  id: '/demo/start/server-funcs',
-  path: '/demo/start/server-funcs',
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
-  id: '/demo/start/api-request',
-  path: '/demo/start/api-request',
-  getParentRoute: () => rootRouteImport,
+const LayoutProductsIndexRoute = LayoutProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
-const DemoApiNamesRoute = DemoApiNamesRouteImport.update({
-  id: '/demo/api/names',
-  path: '/demo/api/names',
-  getParentRoute: () => rootRouteImport,
+const LayoutDashboardIndexRoute = LayoutDashboardIndexRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
-const DemoStartSsrIndexRoute = DemoStartSsrIndexRouteImport.update({
-  id: '/demo/start/ssr/',
-  path: '/demo/start/ssr/',
-  getParentRoute: () => rootRouteImport,
+const LayoutProductsNewRoute = LayoutProductsNewRouteImport.update({
+  id: '/products/new',
+  path: '/products/new',
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
-const DemoStartSsrSpaModeRoute = DemoStartSsrSpaModeRouteImport.update({
-  id: '/demo/start/ssr/spa-mode',
-  path: '/demo/start/ssr/spa-mode',
-  getParentRoute: () => rootRouteImport,
+const LayoutProductsIdIndexRoute = LayoutProductsIdIndexRouteImport.update({
+  id: '/products/$id/',
+  path: '/products/$id/',
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
-const DemoStartSsrFullSsrRoute = DemoStartSsrFullSsrRouteImport.update({
-  id: '/demo/start/ssr/full-ssr',
-  path: '/demo/start/ssr/full-ssr',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
-  id: '/demo/start/ssr/data-only',
-  path: '/demo/start/ssr/data-only',
-  getParentRoute: () => rootRouteImport,
+const LayoutProductsIdEditRoute = LayoutProductsIdEditRouteImport.update({
+  id: '/products/$id/edit',
+  path: '/products/$id/edit',
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
+  '/layout': typeof LayoutRouteRouteWithChildren
+  '/login/': typeof LoginIndexRoute
+  '/layout/products/new': typeof LayoutProductsNewRoute
+  '/layout/dashboard/': typeof LayoutDashboardIndexRoute
+  '/layout/products/': typeof LayoutProductsIndexRoute
+  '/layout/products/$id/edit': typeof LayoutProductsIdEditRoute
+  '/layout/products/$id/': typeof LayoutProductsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr': typeof DemoStartSsrIndexRoute
+  '/layout': typeof LayoutRouteRouteWithChildren
+  '/login': typeof LoginIndexRoute
+  '/layout/products/new': typeof LayoutProductsNewRoute
+  '/layout/dashboard': typeof LayoutDashboardIndexRoute
+  '/layout/products': typeof LayoutProductsIndexRoute
+  '/layout/products/$id/edit': typeof LayoutProductsIdEditRoute
+  '/layout/products/$id': typeof LayoutProductsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
+  '/layout': typeof LayoutRouteRouteWithChildren
+  '/login/': typeof LoginIndexRoute
+  '/layout/products/new': typeof LayoutProductsNewRoute
+  '/layout/dashboard/': typeof LayoutDashboardIndexRoute
+  '/layout/products/': typeof LayoutProductsIndexRoute
+  '/layout/products/$id/edit': typeof LayoutProductsIdEditRoute
+  '/layout/products/$id/': typeof LayoutProductsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/demo/api/names'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr/'
+    | '/layout'
+    | '/login/'
+    | '/layout/products/new'
+    | '/layout/dashboard/'
+    | '/layout/products/'
+    | '/layout/products/$id/edit'
+    | '/layout/products/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/demo/api/names'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr'
+    | '/layout'
+    | '/login'
+    | '/layout/products/new'
+    | '/layout/dashboard'
+    | '/layout/products'
+    | '/layout/products/$id/edit'
+    | '/layout/products/$id'
   id:
     | '__root__'
     | '/'
-    | '/demo/api/names'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr/'
+    | '/layout'
+    | '/login/'
+    | '/layout/products/new'
+    | '/layout/dashboard/'
+    | '/layout/products/'
+    | '/layout/products/$id/edit'
+    | '/layout/products/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoApiNamesRoute: typeof DemoApiNamesRoute
-  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
-  DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
-  DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
-  DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
-  DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
-  DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
+  LayoutRouteRoute: typeof LayoutRouteRouteWithChildren
+  LoginIndexRoute: typeof LoginIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/layout': {
+      id: '/layout'
+      path: '/layout'
+      fullPath: '/layout'
+      preLoaderRoute: typeof LayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -143,67 +145,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/start/server-funcs': {
-      id: '/demo/start/server-funcs'
-      path: '/demo/start/server-funcs'
-      fullPath: '/demo/start/server-funcs'
-      preLoaderRoute: typeof DemoStartServerFuncsRouteImport
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login/'
+      preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/start/api-request': {
-      id: '/demo/start/api-request'
-      path: '/demo/start/api-request'
-      fullPath: '/demo/start/api-request'
-      preLoaderRoute: typeof DemoStartApiRequestRouteImport
-      parentRoute: typeof rootRouteImport
+    '/layout/products/': {
+      id: '/layout/products/'
+      path: '/products'
+      fullPath: '/layout/products/'
+      preLoaderRoute: typeof LayoutProductsIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
-    '/demo/api/names': {
-      id: '/demo/api/names'
-      path: '/demo/api/names'
-      fullPath: '/demo/api/names'
-      preLoaderRoute: typeof DemoApiNamesRouteImport
-      parentRoute: typeof rootRouteImport
+    '/layout/dashboard/': {
+      id: '/layout/dashboard/'
+      path: '/dashboard'
+      fullPath: '/layout/dashboard/'
+      preLoaderRoute: typeof LayoutDashboardIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
-    '/demo/start/ssr/': {
-      id: '/demo/start/ssr/'
-      path: '/demo/start/ssr'
-      fullPath: '/demo/start/ssr/'
-      preLoaderRoute: typeof DemoStartSsrIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/layout/products/new': {
+      id: '/layout/products/new'
+      path: '/products/new'
+      fullPath: '/layout/products/new'
+      preLoaderRoute: typeof LayoutProductsNewRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
-    '/demo/start/ssr/spa-mode': {
-      id: '/demo/start/ssr/spa-mode'
-      path: '/demo/start/ssr/spa-mode'
-      fullPath: '/demo/start/ssr/spa-mode'
-      preLoaderRoute: typeof DemoStartSsrSpaModeRouteImport
-      parentRoute: typeof rootRouteImport
+    '/layout/products/$id/': {
+      id: '/layout/products/$id/'
+      path: '/products/$id'
+      fullPath: '/layout/products/$id/'
+      preLoaderRoute: typeof LayoutProductsIdIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
-    '/demo/start/ssr/full-ssr': {
-      id: '/demo/start/ssr/full-ssr'
-      path: '/demo/start/ssr/full-ssr'
-      fullPath: '/demo/start/ssr/full-ssr'
-      preLoaderRoute: typeof DemoStartSsrFullSsrRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/data-only': {
-      id: '/demo/start/ssr/data-only'
-      path: '/demo/start/ssr/data-only'
-      fullPath: '/demo/start/ssr/data-only'
-      preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
-      parentRoute: typeof rootRouteImport
+    '/layout/products/$id/edit': {
+      id: '/layout/products/$id/edit'
+      path: '/products/$id/edit'
+      fullPath: '/layout/products/$id/edit'
+      preLoaderRoute: typeof LayoutProductsIdEditRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
   }
 }
 
+interface LayoutRouteRouteChildren {
+  LayoutProductsNewRoute: typeof LayoutProductsNewRoute
+  LayoutDashboardIndexRoute: typeof LayoutDashboardIndexRoute
+  LayoutProductsIndexRoute: typeof LayoutProductsIndexRoute
+  LayoutProductsIdEditRoute: typeof LayoutProductsIdEditRoute
+  LayoutProductsIdIndexRoute: typeof LayoutProductsIdIndexRoute
+}
+
+const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
+  LayoutProductsNewRoute: LayoutProductsNewRoute,
+  LayoutDashboardIndexRoute: LayoutDashboardIndexRoute,
+  LayoutProductsIndexRoute: LayoutProductsIndexRoute,
+  LayoutProductsIdEditRoute: LayoutProductsIdEditRoute,
+  LayoutProductsIdIndexRoute: LayoutProductsIdIndexRoute,
+}
+
+const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(
+  LayoutRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoApiNamesRoute: DemoApiNamesRoute,
-  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
-  DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
-  DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
-  DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
-  DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,
-  DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
+  LayoutRouteRoute: LayoutRouteRouteWithChildren,
+  LoginIndexRoute: LoginIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
