@@ -1,5 +1,6 @@
-import { fetchProducts, getProductById } from "@/data-access/products";
-import { useQuery } from "@tanstack/react-query";
+import { fetchProducts, getProductById, updateProductById } from "@/data-access/products";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export function useProducts() {
   return useQuery({
@@ -11,8 +12,31 @@ export function useProducts() {
 
 export function useProductsById(id: string) {
     return useQuery({
-    queryKey: ["product", id],
+    queryKey: ["products", id],
     queryFn: () => getProductById(id),
     enabled: !!id, // 👈 prevents infinite loading
+  });
+}
+
+export function useUpdateProduct() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateProductById,
+    onSuccess: (updatedProduct) => {
+      // Invalidate the specific product query
+      queryClient.invalidateQueries({ queryKey: ["product", updatedProduct.id] });
+      // Also invalidate the products list if you have one
+      queryClient.invalidateQueries({ queryKey: ["product"] });
+      toast.success("Product updated successfully!", {
+        description: `${updatedProduct.name} has been updated.`,
+      })
+    },
+    onError: (error) => {
+      toast.error("Failed to update product.", {
+        description: error.message || "Please try again later!"
+      })
+      console.error("Error updating product:", error);
+    },
   });
 }
