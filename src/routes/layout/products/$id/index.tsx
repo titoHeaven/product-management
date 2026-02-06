@@ -1,4 +1,4 @@
-import { useProductsById } from "@/hooks/useProducts";
+import { ProductCard } from "@/components/products/ProductCard";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/layout/products/$id/")({
@@ -7,20 +7,5 @@ export const Route = createFileRoute("/layout/products/$id/")({
 
 function ProductDetail() {
   const { id } = Route.useParams();
-  const { data, isLoading, error } = useProductsById(id);
-
-  if (isLoading) return <div>Loading project...</div>;
-  if (error)
-    return (
-      <div>
-        An error has occured while fetching the product. See error message{" "}
-        {error.message}
-      </div>
-    );
-  return (
-    <div>
-      <p>Product ID: {id}</p>
-      <h1>{data.name}</h1>
-    </div>
-  );
+  return <ProductCard id={id} />;
 }

@@ -17,7 +17,7 @@ export async function fetchProducts(): Promise<Products[]> {
   return data;
 }
 
-export async function getProductById(id: string) {
+export async function getProductById(id: string): Promise<Products> {
   const res = await fetch(
     `${API_URL}/${id}`
   );
@@ -27,4 +27,20 @@ export async function getProductById(id: string) {
   }
 
   return res.json();
+}
+
+export async function updateProductById(product: Products): Promise<Products> {
+  const response = await fetch(`${API_URL}/${product.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  });
+  
+  if (!response.ok) {
+    throw new Error("Failed to update product");
+  }
+  
+  return response.json();
 }
