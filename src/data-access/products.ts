@@ -44,3 +44,15 @@ export async function updateProductById(product: Products): Promise<Products> {
   
   return response.json();
 }
+
+export async function deleteProduct(id: string): Promise<Products> {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete product");
+  }
+
+  return response.json()
+}

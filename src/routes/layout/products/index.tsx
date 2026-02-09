@@ -7,26 +7,51 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useProducts } from "@/hooks/useProducts";
+import { useDeleteProduct } from "@/queries/products";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Eye, Trash2, Plus } from "lucide-react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/layout/products/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  // const [page, setPage] = useState(1);
-  // const [lastPageLength, setLastPageLength] = useState<number | null>(null);
-  // const limit = 5;
   const navigate = useNavigate();
   const { data, error, isLoading } = useProducts();
+  const mutation = useDeleteProduct();
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setLastPageLength(data.length);
-  //   }
-  // }, [data]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
+
+  const handleDeleteClick = (id: string, name: string) => {
+    setProductToDelete({ id, name });
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = () => {
+    if (productToDelete) {
+      mutation.mutate(productToDelete.id, {
+        onSuccess: () => {
+          console.log("Product Delete Successfully!");
+          setDeleteDialogOpen(false);
+          setProductToDelete(null);
+        },
+      });
+    }
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <>Error loading products, see message: {error.message}</>;
@@ -59,7 +84,7 @@ function RouteComponent() {
               <TableCell>{product.price}</TableCell>
               <TableCell>
                 <img
-                  src={""}
+                  src={product.image}
                   alt={product.name}
                   className="w-10 h-10 object-cover rounded"
                 />
@@ -80,11 +105,10 @@ function RouteComponent() {
                     <Eye className="w-4 h-4" />
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="destructive"
                     size="sm"
-                    onClick={() => {
-                      /* Handle delete */
-                    }}
+                    onClick={() => handleDeleteClick(product.id, product.name)}
+                    disabled={mutation.isPending}
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -95,29 +119,33 @@ function RouteComponent() {
         </TableBody>
       </Table>
 
-      {/* Pagination Controls */}
-      {/* <div className="mt-4 flex gap-2">
-    <button
-      onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-      disabled={page === 1}
-      className="px-2 py-1 bg-gray-200 rounded disabled:opacity-50"
-    >
-      Prev
-    </button>
-    <span>Page {page}</span>
-    <button
-      onClick={() => {
-        if (lastPageLength && lastPageLength === limit) {
-          setPage((prev) => prev + 1);
-        }
-      }}
-      disabled={!lastPageLength || lastPageLength < limit}
-      className="px-2 py-1 bg-gray-200 rounded"
-    >
-      Next
-    </button>
-  </div> */}
-      {/* {isFetching && <div className="text-sm text-gray-500">Loading...</div>} */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Product</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete "{productToDelete?.name}"? This
+              action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+              disabled={mutation.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? "Deleting..." : "Delete"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
