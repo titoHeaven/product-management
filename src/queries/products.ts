@@ -1,4 +1,4 @@
-import { deleteProduct, fetchProducts, getProductById, updateProductById } from "@/data-access/products";
+import { createProduct, deleteProduct, fetchProducts, getProductById, updateProductById } from "@/data-access/products";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -57,4 +57,25 @@ export function useDeleteProduct() {
       console.error("Error deleting product:", error)
     }
   })
+}
+
+export function useCreateProduct() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createProduct,
+    onSuccess: (newProduct) => {
+      // Invalidate the products list to show the new product
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Product created successfully!", {
+        description: `${newProduct.name} has been added.`,
+      });
+    },
+    onError: (error) => {
+      toast.error("Failed to create product.", {
+        description: error.message || "Please try again later!"
+      });
+      console.error("Error creating product:", error);
+    },
+  });
 }
