@@ -5,7 +5,6 @@ import {
   CardHeader,
   CardContent,
   CardDescription,
-  CardFooter,
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -20,7 +19,7 @@ import {
 } from "@/components/ui/select";
 
 import { useForm } from "@tanstack/react-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUpdateProduct } from "@/queries/products";
 import { Textarea } from "../ui/textarea";
 
