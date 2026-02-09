@@ -67,13 +67,15 @@ function RouteComponent() {
           Add a product
         </Button>
       </div>
-      <Table>
+      <Table className="mt-10">
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Image</TableHead>
             <TableHead>SKU</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Stock</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -81,15 +83,23 @@ function RouteComponent() {
           {data?.map((product) => (
             <TableRow key={product.id}>
               <TableCell>{product.name}</TableCell>
+              <TableCell>{product.sku}</TableCell>
+              <TableCell>{product.category}</TableCell>
               <TableCell>{product.price}</TableCell>
+              <TableCell>{product.stock}</TableCell>
               <TableCell>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-10 h-10 object-cover rounded"
-                />
+                <span
+                  className={
+                    product.status === "active"
+                      ? "text-green-600 uppercase"
+                      : product.status === "inactive"
+                        ? "text-yellow-600 uppercase"
+                        : "text-gray-400 uppercase"
+                  }
+                >
+                  {product.status}
+                </span>
               </TableCell>
-              <TableCell>SKU</TableCell> {/*{"product.sku" ||" product.id"}*/}
               <TableCell>
                 <div className="flex gap-2">
                   <Button
