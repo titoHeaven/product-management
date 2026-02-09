@@ -10,10 +10,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCreateProduct } from "@/queries/products";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
-import { ArrowLeft } from "lucide-react";
 import { createProductSchema } from "@/fn/products";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../ui/breadcrumb";
 
 export function ProductForm() {
   const navigate = useNavigate();
@@ -51,16 +58,23 @@ export function ProductForm() {
   });
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="mx-auto">
       <div className="mb-6">
-        <Button
-          variant="ghost"
-          onClick={() => navigate({ to: "/layout/products" })}
-          className="mb-4"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Products
-        </Button>
+        <div className="mb-2">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/layout/products">Products Page</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Add a product</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Add New Product
         </h1>
