@@ -32,7 +32,7 @@ export function Sidebar() {
             isCollapsed ? "hidden" : "block"
           }`}
         >
-          MyApp
+          Product Hub
         </div>
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
