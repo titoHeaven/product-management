@@ -59,9 +59,14 @@ function RouteComponent() {
   return (
     <div>
       <div className="flex justify-between">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Products
-        </h1>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            Products
+          </h1>
+          <h3 className="text-gray-400">
+            Manage, view, and update all available products in one place.
+          </h3>
+        </div>
         <Button onClick={() => navigate({ to: "/layout/products/new" })}>
           <Plus className="w-4 h-4" />
           Add a product

@@ -22,6 +22,15 @@ import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import { useUpdateProduct } from "@/queries/products";
 import { Textarea } from "../ui/textarea";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../ui/breadcrumb";
+import { Link } from "@tanstack/react-router";
 
 type ProductCardProps = {
   id: string;
@@ -64,7 +73,30 @@ export function ProductCard({ id }: ProductCardProps) {
   if (error) return <div>Error</div>;
 
   return (
-    <div className="mx-auto p-4">
+    <div className="mx-auto">
+      <div className="mb-6">
+        <div className="mb-2">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/layout/products">Products Page</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Product Details</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          Product Details
+        </h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-2">
+          Overview of the product.
+        </p>
+      </div>
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
