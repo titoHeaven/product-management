@@ -169,8 +169,6 @@ export function ProductForm() {
                   id={field.name}
                   name={field.name}
                   type="number"
-                  step="0.01"
-                  value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(Number(e.target.value))}
                   placeholder="0.00"
@@ -206,7 +204,6 @@ export function ProductForm() {
                   id={field.name}
                   name={field.name}
                   type="number"
-                  value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(Number(e.target.value))}
                   placeholder="0"
