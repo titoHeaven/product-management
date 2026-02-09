@@ -56,3 +56,19 @@ export async function deleteProduct(id: string): Promise<Products> {
 
   return response.json()
 }
+
+export async function createProduct(product: Omit<Products, 'id' | 'createdAt' | 'updatedAt'>): Promise<Products> {
+  const response = await fetch(`${API_URL}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create product");
+  }
+
+  return response.json();
+}
