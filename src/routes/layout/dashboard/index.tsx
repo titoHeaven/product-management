@@ -1,6 +1,19 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/layout/dashboard/")({
+  beforeLoad: async () => {
+    // Check if we're in the browser (not SSR)
+    if (typeof window === "undefined") return;
+
+    const token = localStorage.getItem("accessToken");
+    const user = localStorage.getItem("user");
+
+    if (!token || !user) {
+      throw redirect({
+        to: "/login",
+      });
+    }
+  },
   component: RouteComponent,
 });
 

@@ -10,6 +10,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import appCss from "../styles.css?url";
 import { Toaster } from "sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/contexts/AuthContext"; // ✅ Add this import
 
 const queryClient = new QueryClient();
 
@@ -35,11 +36,10 @@ export const Route = createRootRoute({
     ],
   }),
 
-  component: RootComponent, // Add this
+  component: RootComponent,
   shellComponent: RootDocument,
 });
 
-// Add this component to render the route tree
 function RootComponent() {
   return <Outlet />;
 }
@@ -52,8 +52,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          {children}
-          <Toaster position="top-right" />
+          <AuthProvider>
+            {" "}
+            {/* ✅ Wrap everything with AuthProvider */}
+            {children}
+            <Toaster position="top-right" />
+          </AuthProvider>{" "}
+          {/* ✅ Close AuthProvider */}
         </QueryClientProvider>
         <TanStackDevtools
           config={{
