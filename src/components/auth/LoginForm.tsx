@@ -1,4 +1,3 @@
-// src/components/LoginForm.tsx
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,35 +9,42 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { useNavigate } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "@tanstack/react-form";
 import { useAuth } from "@/hooks/useAuth";
+import { useAuthContext } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import { loginSchema, LoginSchemaType } from "@/fn/auth";
+import { loginSchema } from "@/fn/auth";
 
 export function LoginForm() {
   const navigate = useNavigate();
   const { mutate, isPending } = useAuth();
+  const { login } = useAuthContext();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginSchemaType>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: async ({ value }) => {
+      const result = loginSchema.safeParse(value);
+
+      if (!result.success) {
+        console.error("Validation failed", result.error);
+        return;
+      }
+
+      mutate(result.data, {
+        onSuccess: (user) => {
+          login(user);
+          toast.success(`Welcome back, ${user.name}!`);
+          navigate({ to: "/layout/dashboard" });
+        },
+        onError: (error: any) => {
+          toast.error(error.message || "Login failed");
+        },
+      });
+    },
   });
-
-  const onSubmit = (data: LoginSchemaType) => {
-    mutate(data, {
-      onSuccess: (user) => {
-        toast.success(`Welcome back, ${user.name}!`);
-        navigate({ to: "/layout/dashboard" });
-      },
-      onError: (error: any) => {
-        toast.error(error.message || "Login failed");
-      },
-    });
-  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-500 p-4">
@@ -52,34 +58,81 @@ export function LoginForm() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 mt-2">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="flex flex-col space-y-1">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                {...register("email")}
-              />
-              {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}
+            className="space-y-4"
+          >
+            {/* Email Field */}
+            <form.Field
+              name="email"
+              validators={{
+                onChange: ({ value }) => {
+                  const result = loginSchema.shape.email.safeParse(value);
+                  if (!result.success) {
+                    return result.error.issues[0]?.message;
+                  }
+                  return undefined;
+                },
+              }}
+            >
+              {(field) => (
+                <div className="flex flex-col space-y-1">
+                  <Label htmlFor={field.name}>Email</Label>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    type="email"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="you@example.com"
+                  />
+                  {field.state.meta.errors ? (
+                    <p className="text-sm text-red-500">
+                      {field.state.meta.errors.join(", ")}
+                    </p>
+                  ) : null}
+                </div>
               )}
-            </div>
+            </form.Field>
 
-            <div className="flex flex-col space-y-1">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="********"
-                {...register("password")}
-              />
-              {errors.password && (
-                <p className="text-sm text-red-500">
-                  {errors.password.message}
-                </p>
+            {/* Password Field */}
+            <form.Field
+              name="password"
+              validators={{
+                onChange: ({ value }) => {
+                  const result = loginSchema.shape.password.safeParse(value);
+                  if (!result.success) {
+                    return result.error.issues[0]?.message;
+                  }
+                  return undefined;
+                },
+              }}
+            >
+              {(field) => (
+                <div className="flex flex-col space-y-1">
+                  <Label htmlFor={field.name}>Password</Label>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    type="password"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="********"
+                  />
+                  {field.state.meta.errors ? (
+                    <p className="text-sm text-red-500">
+                      {field.state.meta.errors.join(", ")}
+                    </p>
+                  ) : null}
+                </div>
               )}
-            </div>
+            </form.Field>
 
             <Button
               type="submit"

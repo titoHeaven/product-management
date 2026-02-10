@@ -1,29 +1,39 @@
 export interface LoginPayload {
+  name: string;
   email: string;
   password: string;
 }
 
 export interface LoginResponse {
-  id: number;
-  name: string;
-  email: string;
+  accessToken: string,
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  }
 }
 
-export const loginUser = async (payload: LoginPayload): Promise<LoginResponse> => {
-  // JSON Placeholder mock API
-  const response = await fetch(`https://jsonplaceholder.typicode.com/users/1`);
-  if (!response.ok) throw new Error("Login failed");
+const API_URL = "http://localhost:3001"
 
-  const data = await response.json();
+// Login function
+export const loginUser = async (payload: LoginPayload): Promise<LoginResponse['user']> => {
+  const response = await fetch(`${API_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
 
-  // Fake validation
-  if (payload.email !== "Sincere@april.biz" || payload.password !== "password") {
-    throw new Error("Invalid credentials");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Login failed");
   }
 
-  return {
-    id: data.id,
-    name: data.name,
-    email: data.email,
-  };
+  const data: LoginResponse = await response.json();
+  
+  // Store JWT token in localStorage
+  localStorage.setItem("accessToken", data.accessToken);
+  
+  return data.user;
 };

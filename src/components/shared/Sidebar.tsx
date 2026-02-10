@@ -1,10 +1,15 @@
 // src/components/shared/Sidebar.tsx
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
-import { Home, Package, ChevronLeft, ChevronRight } from "lucide-react";
+import { Home, Package, ChevronLeft, ChevronRight, LogOut } from "lucide-react";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { logout, user } = useAuthContext();
+  const navigate = useNavigate();
+  const router = useRouter();
 
   const menuItems = [
     {
@@ -18,6 +23,13 @@ export function Sidebar() {
       label: "Products",
     },
   ];
+
+  const handleLogout = () => {
+    logout();
+    router.invalidate().then(() => {
+      navigate({ to: "/login" });
+    });
+  };
 
   return (
     <aside
@@ -73,6 +85,39 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      {/* User Info & Logout - Bottom Section */}
+      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        {/* User Info */}
+        {!isCollapsed && (
+          <div className="mb-3 px-2">
+            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+              {user?.name}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+              {user?.email}
+            </p>
+          </div>
+        )}
+
+        {/* Logout Button */}
+        <Button
+          onClick={handleLogout}
+          variant="outline"
+          className={`w-full flex items-center gap-3 ${
+            isCollapsed ? "justify-center px-2" : "justify-start px-4"
+          } py-3 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors`}
+        >
+          <LogOut className="w-5 h-5 flex-shrink-0" />
+          <span
+            className={`${
+              isCollapsed ? "hidden" : "block"
+            } transition-all duration-300`}
+          >
+            Logout
+          </span>
+        </Button>
+      </div>
     </aside>
   );
 }
