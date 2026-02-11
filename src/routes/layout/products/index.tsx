@@ -90,7 +90,10 @@ function RouteComponent() {
               <TableCell>{product.name}</TableCell>
               <TableCell>{product.sku}</TableCell>
               <TableCell>{product.category}</TableCell>
-              <TableCell>{product.price}</TableCell>
+              <TableCell>
+                ₱{" "}
+                {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </TableCell>
               <TableCell>{product.stock}</TableCell>
               <TableCell>
                 <span

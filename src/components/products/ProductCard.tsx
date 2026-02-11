@@ -198,13 +198,16 @@ export function ProductCard({ id }: ProductCardProps) {
                         step="0.01"
                         value={field.state.value}
                         onChange={(e) =>
-                          field.handleChange(parseFloat(e.target.value) || 0)
+                          field.handleChange(parseFloat(e.target.value))
                         }
                         placeholder="0.00"
                       />
                     ) : (
                       <p className="text-sm text-muted-foreground">
-                        ${field.state.value.toFixed(2)}
+                        ₱{" "}
+                        {field.state.value
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                       </p>
                     )}
                   </div>
