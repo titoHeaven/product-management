@@ -1,9 +1,9 @@
 import { Products } from "@/types/products";
 
-const API_URL = "https://69845e72885008c00db0f05a.mockapi.io/products";
+const API_URL = "http://localhost:3001";
 
 export async function fetchProducts(): Promise<Products[]> {
-  const url = `${API_URL}`;
+  const url = `${API_URL}/products`;
   console.log("Fetching URL:", url);
 
   const res = await fetch(url);
@@ -19,7 +19,7 @@ export async function fetchProducts(): Promise<Products[]> {
 
 export async function getProductById(id: string): Promise<Products> {
   const res = await fetch(
-    `${API_URL}/${id}`
+    `${API_URL}/products/${id}`
   );
 
   if (!res.ok) {
@@ -30,7 +30,7 @@ export async function getProductById(id: string): Promise<Products> {
 }
 
 export async function updateProductById(product: Products): Promise<Products> {
-  const response = await fetch(`${API_URL}/${product.id}`, {
+  const response = await fetch(`${API_URL}/products/${product.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export async function updateProductById(product: Products): Promise<Products> {
 }
 
 export async function deleteProduct(id: string): Promise<Products> {
-  const response = await fetch(`${API_URL}/${id}`, {
+  const response = await fetch(`${API_URL}/products/${id}`, {
     method: "DELETE",
   });
 
@@ -58,7 +58,7 @@ export async function deleteProduct(id: string): Promise<Products> {
 }
 
 export async function createProduct(product: Omit<Products, 'id' | 'createdAt' | 'updatedAt'>): Promise<Products> {
-  const response = await fetch(`${API_URL}`, {
+  const response = await fetch(`${API_URL}/products`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

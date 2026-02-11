@@ -36,7 +36,7 @@ export function useUpdateProduct() {
       toast.error("Failed to update product.", {
         description: error.message || "Please try again later!"
       })
-      console.error("Error updating product:", error);
+      console.error("Error updating product:", error.message);
     },
   }) 
 }
