@@ -1,4 +1,5 @@
-import { createProduct, deleteProduct, fetchProducts, getProductById, updateProductById } from "@/data-access/products";
+import { createProduct, deleteProduct, fetchProducts, getProductById, updateProductById, updateProductImage, updateProductStatus } from "@/data-access/products";
+import { Products } from "@/types/products";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -76,6 +77,44 @@ export function useCreateProduct() {
         description: error.message || "Please try again later!"
       });
       console.error("Error creating product:", error);
+    },
+  });
+}
+
+export function useUpdateProductStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateProductStatus,
+    onSuccess: (updatedProduct: Products) => {
+      queryClient.invalidateQueries({ queryKey: ["products", updatedProduct.id] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Status updated successfully!");
+    },
+    onError: (error: Error) => {
+      toast.error("Failed to update status.", {
+        description: error.message || "Please try again later!"
+      });
+      console.error("Error updating status:", error.message);
+    },
+  });
+}
+
+export function useUpdateProductImage() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateProductImage,
+    onSuccess: (updatedProduct: Products) => {
+      queryClient.invalidateQueries({ queryKey: ["products", updatedProduct.id] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      toast.success("Image updated successfully!");
+    },
+    onError: (error: Error) => {
+      toast.error("Failed to update image.", {
+        description: error.message || "Please try again later!"
+      });
+      console.error("Error updating image:", error.message);
     },
   });
 }
