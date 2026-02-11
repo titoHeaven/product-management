@@ -1,5 +1,15 @@
 import { Products } from "@/types/products";
 
+export interface UpdateStatusPayload {
+  id: string;
+  status: string;
+}
+
+export interface UpdateImagePayload {
+  id: string;
+  image: string;
+}
+
 const API_URL = "http://localhost:3001";
 
 export async function fetchProducts(): Promise<Products[]> {
@@ -68,6 +78,40 @@ export async function createProduct(product: Omit<Products, 'id' | 'createdAt' |
 
   if (!response.ok) {
     throw new Error("Failed to create product");
+  }
+
+  return response.json();
+}
+
+export async function updateProductStatus(payload: UpdateStatusPayload): Promise<Products> {
+  const response = await fetch(`${API_URL}/products/${payload.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status: payload.status }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to update status");
+  }
+
+  return response.json();
+}
+
+export async function updateProductImage(payload: UpdateImagePayload): Promise<Products> {
+  const response = await fetch(`${API_URL}/products/${payload.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ image: payload.image }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to update image");
   }
 
   return response.json();
